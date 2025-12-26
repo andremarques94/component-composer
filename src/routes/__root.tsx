@@ -3,9 +3,11 @@ import type { QueryClient } from "@tanstack/react-query";
 import {
 	createRootRouteWithContext,
 	HeadContent,
+	Outlet,
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { Toaster } from "@/components/ui/sonner";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
 
@@ -24,7 +26,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: "Component Composer",
 			},
 		],
 		links: [
@@ -36,16 +38,28 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 	}),
 
 	shellComponent: RootDocument,
+
+	notFoundComponent: () => {
+		return (
+			<div className="flex items-center justify-center h-screen">
+				<div className="text-center">
+					<h1 className="text-4xl font-bold mb-2">404</h1>
+					<p className="text-muted-foreground">Page not found</p>
+				</div>
+			</div>
+		);
+	},
 });
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument() {
 	return (
 		<html lang="en">
 			<head>
 				<HeadContent />
 			</head>
 			<body>
-				{children}
+				<Outlet />
+				<Toaster />
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",

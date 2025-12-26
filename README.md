@@ -1,301 +1,456 @@
-Welcome to your new TanStack app! 
+# Component Composer
 
-# Getting Started
+An AI-powered tool that **learns your design system** and generates new components that perfectly match your existing patterns, styles, and conventions.
 
-To run this application:
+Point it at your Storybook or component repository, and it will analyze your design system to generate components that look like they were built by your team.
 
+## 🎯 The Problem It Solves
+
+Building new components in an existing design system is tedious:
+- ❌ Need to remember exact prop patterns
+- ❌ Must follow styling conventions
+- ❌ Have to look up design tokens
+- ❌ Copy-paste and modify existing components
+
+**Component Composer automates this** by learning your design system and generating components that match your patterns exactly.
+
+## ✨ How It Works
+```
+1. Parse Your Design System
+   ↓
+   Analyze Storybook or component code
+   Extract patterns, styles, conventions
+   
+2. Describe What You Need
+   ↓
+   "A product card with image, title, price, and buy button"
+   
+3. Generate Component
+   ↓
+   AI creates component matching YOUR design system
+   Uses YOUR styling approach
+   Follows YOUR naming conventions
+   Composes YOUR existing components
+   
+4. Preview & Use
+   ↓
+   See it live, test interactions
+   Copy code directly into your project
+```
+
+## 🚀 Features
+
+- 🎨 **Design System Aware** - Learns from your Storybook or component code
+- 🤖 **LLM Agnostic** - Works with Claude, GPT, or local Ollama
+- 👀 **Live Preview** - See components render as code is generated
+- ⚡ **Streaming** - Real-time code generation
+- 🎭 **Style Matching** - Detects and uses your styling approach (Emotion, Styled Components, CSS Modules, Tailwind)
+- 🎨 **Token Aware** - Uses your design tokens (colors, spacing, typography)
+- 🔒 **Sandboxed** - Safe execution in isolated environment
+- 💅 **Modern UI** - Built with Tailwind CSS and shadcn/ui
+
+## 🏗️ Tech Stack
+
+- **[TanStack Start](https://tanstack.com/start)** - Full-stack React framework
+- **[SST v3](https://sst.dev)** - Infrastructure as Code
+- **[Tailwind CSS](https://tailwindcss.com)** + **[shadcn/ui](https://ui.shadcn.com)** - App UI
+- **[React Sandpack](https://sandpack.codesandbox.io/)** - Live preview
+- **TypeScript** - Type safety
+- **TanStack Query** - Data fetching
+- **Zod** - Validation
+
+## 📋 Prerequisites
+
+- Node.js 18+ or Bun
+- npm/pnpm/yarn
+- (Optional) Ollama for local LLM
+
+## 🚀 Getting Started
+
+### 1. Install
 ```bash
-pnpm install
-pnpm start
+git clone <repo-url> component-composer
+cd component-composer
+npm install
 ```
 
-# Building For Production
-
-To build this application for production:
-
+### 2. Setup shadcn
 ```bash
-pnpm build
+npx shadcn@latest init
+npx shadcn@latest add button card textarea select scroll-area separator
 ```
 
-## Testing
+### 3. Configure Environment
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
-
+Create `.env.local`:
 ```bash
-pnpm test
+# LLM Provider
+LLM_PROVIDER=ollama  # or 'anthropic' or 'openai'
+
+# API Keys (for cloud providers)
+ANTHROPIC_API_KEY=sk-ant-...
+OPENAI_API_KEY=sk-...
+
+# Ollama (for local)
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.1
 ```
 
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-
-## Linting & Formatting
-
-This project uses [Biome](https://biomejs.dev/) for linting and formatting. The following scripts are available:
-
-
+### 4. Run
 ```bash
-pnpm lint
-pnpm format
-pnpm check
+npm run dev
 ```
 
+Open [http://localhost:3000](http://localhost:3000)
 
+## 💡 Usage
 
-## Routing
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
+### Step 1: Connect Your Design System
 
-### Adding A Route
-
-To add a new route to your application just add another a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
+**Option A: Storybook URL**
+```
+https://your-company.com/storybook
 ```
 
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
+**Option B: Local Repository Path**
+```
+/path/to/your-project/src/components
 ```
 
-This will create a link that will navigate to the `/about` route.
+Click "Parse Design System" - this will analyze:
+- Component structures and props
+- Styling approach (Emotion, Styled Components, etc.)
+- Design tokens (colors, spacing, typography)
+- Naming conventions
+- Usage patterns
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
+### Step 2: Review Parsed Information
 
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
-import { Link } from "@tanstack/react-router";
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
+The app shows what it learned:
+```
+✓ Found 47 components
+✓ Styling: Emotion + TypeScript
+✓ Design Tokens: 24 colors, 8 spacing values
+✓ Conventions: Props use 'variant', 'size' pattern
 ```
 
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
+### Step 3: Generate Components
 
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/people",
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
-});
+Describe what you need:
+```
+"A product card component with:
+- Product image at the top
+- Title and description
+- Price with old/new price display
+- Add to cart button
+- Favorite icon button
+"
 ```
 
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
+### Step 4: Watch It Generate
 
-### React-Query
+- **Left side**: Code streams in real-time
+- **Right side**: Component renders live
+- Uses YOUR design tokens
+- Matches YOUR styling approach
+- Follows YOUR conventions
 
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
+### Step 5: Use It
 
-First add your dependencies:
+- Click "Copy Code"
+- Paste into your project
+- It already matches your design system!
 
-```bash
-pnpm add @tanstack/react-query @tanstack/react-query-devtools
+## 🎨 Design System Support
+
+Component Composer supports any React design system:
+
+### Material-UI (MUI)
+```typescript
+// Detects you use MUI + Emotion
+import { styled } from '@mui/material/styles'
+import { Card, Button } from '@mui/material'
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  padding: theme.spacing(2),
+  // Uses your theme tokens
+}))
 ```
 
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
+### Styled Components
+```typescript
+// Detects you use styled-components
+import styled from 'styled-components'
 
-```tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-// ...
-
-const queryClient = new QueryClient();
-
-// ...
-
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
+const Card = styled.div`
+  padding: ${props => props.theme.spacing.md};
+  color: ${props => props.theme.colors.primary};
+  // Uses your theme
+`
 ```
 
-You can also add TanStack Query Devtools to the root route (optional).
+### Emotion
+```typescript
+// Detects you use Emotion
+import { css } from '@emotion/react'
 
-```tsx
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
+const cardStyles = (theme) => css`
+  padding: ${theme.spacing.md};
+  color: ${theme.colors.primary};
+`
 ```
 
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from "@tanstack/react-query";
-
-import "./App.css";
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ["people"],
-    queryFn: () =>
-      fetch("https://swapi.dev/api/people")
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
-
+### Tailwind
+```typescript
+// Detects you use Tailwind
+export function Card({ children }) {
   return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
+    <div className="p-4 bg-white rounded-lg shadow">
+      {children}
     </div>
-  );
+  )
 }
-
-export default App;
 ```
 
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
+### CSS Modules
+```typescript
+// Detects you use CSS Modules
+import styles from './Card.module.css'
 
-## State Management
+export function Card({ children }) {
+  return <div className={styles.card}>{children}</div>
+}
+```
 
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
+## 📁 Project Structure
+```
+component-composer/
+├── app/
+│   ├── routes/
+│   │   ├── api/
+│   │   │   ├── parse-storybook.ts    # Parse design system
+│   │   │   └── generate.ts           # Generate component
+│   │   ├── _layout.tsx
+│   │   └── index.tsx                 # Main interface
+│   ├── components/
+│   │   ├── ui/                       # shadcn components
+│   │   ├── ChatInterface.tsx         # Chat UI
+│   │   ├── SplitView.tsx             # Code + Preview
+│   │   └── DesignSystemInfo.tsx      # Show parsed info
+│   ├── lib/
+│   │   ├── parsers/
+│   │   │   ├── storybook-parser.ts   # Parse Storybook
+│   │   │   └── code-parser.ts        # Parse repository
+│   │   ├── llm-client.ts             # LLM abstraction
+│   │   └── utils.ts
+│   └── types/
+│       └── shared.ts                 # Types + schemas
+├── sst.config.ts
+├── tailwind.config.ts
+└── package.json
+```
 
-First you need to add TanStack Store as a dependency:
+## 🔍 What Gets Parsed
 
+### From Storybook
+
+1. **Component Stories** (`.stories.tsx`)
+   - Component props and types
+   - Usage examples
+   - Variants and states
+
+2. **Documentation** (MDX)
+   - Design principles
+   - Usage guidelines
+   - Best practices
+
+3. **Design Tokens**
+   - Colors
+   - Spacing
+   - Typography
+   - Breakpoints
+
+### From Repository
+
+1. **Component Files**
+   - Component structure
+   - Prop patterns
+   - Styling approach
+
+2. **Theme Files**
+   - Design tokens
+   - Theme configuration
+
+3. **Common Patterns**
+   - Import patterns
+   - Composition patterns
+   - Naming conventions
+
+## 🤖 LLM Provider Setup
+
+### Option 1: Ollama (Free, Local)
 ```bash
-pnpm add @tanstack/store
+# Install
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Pull model
+ollama pull llama3.1
+
+# Configure
+echo "LLM_PROVIDER=ollama" >> .env.local
 ```
 
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
+**Best for:** Development, privacy, no costs
 
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/store";
-import "./App.css";
+### Option 2: Claude API (Best Quality)
+```bash
+# Get key from https://console.anthropic.com
+echo "LLM_PROVIDER=anthropic" >> .env.local
+echo "ANTHROPIC_API_KEY=sk-ant-..." >> .env.local
+```
 
-const countStore = new Store(0);
+**Best for:** Production, highest quality
 
-function App() {
-  const count = useStore(countStore);
+### Option 3: OpenAI GPT
+```bash
+# Get key from https://platform.openai.com
+echo "LLM_PROVIDER=openai" >> .env.local
+echo "OPENAI_API_KEY=sk-..." >> .env.local
+```
+
+**Best for:** Fast, reliable fallback
+
+## 🚢 Deployment
+
+### Cloudflare Workers (Recommended)
+```bash
+npx sst init
+npm run deploy:production
+```
+
+**Cost:** ~$0-5/month
+
+### AWS Lambda
+```bash
+# Update sst.config.ts to use AWS
+npm run deploy
+```
+
+### Self-Host
+```bash
+npm run build
+docker build -t component-composer .
+docker run -p 3000:3000 component-composer
+```
+
+## 🎨 Example Generations
+
+### Input
+```
+Storybook: https://your-company.com/storybook
+Prompt: "Generate a user profile card"
+```
+
+### Output (Matches YOUR Design System)
+```typescript
+// If you use MUI + Emotion
+import { Card, Avatar, Typography, Button } from '@mui/material'
+import { styled } from '@mui/material/styles'
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  padding: theme.spacing(3),
+  display: 'flex',
+  gap: theme.spacing(2),
+}))
+
+export function UserProfileCard({ user }) {
   return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
+    <StyledCard>
+      <Avatar src={user.avatar} />
+      <div>
+        <Typography variant="h6">{user.name}</Typography>
+        <Typography variant="body2" color="text.secondary">
+          {user.role}
+        </Typography>
+        <Button variant="outlined" size="small">
+          View Profile
+        </Button>
+      </div>
+    </StyledCard>
+  )
 }
-
-export default App;
 ```
 
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
+It automatically:
+- ✅ Used your MUI components
+- ✅ Used Emotion's `styled` (your styling approach)
+- ✅ Used your theme tokens (`theme.spacing`, etc.)
+- ✅ Followed your prop patterns (`variant`, `size`)
+- ✅ Matched your component structure
 
-Let's check this out by doubling the count using derived state.
+## 🐛 Troubleshooting
 
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store, Derived } from "@tanstack/store";
-import "./App.css";
+### "Could not parse Storybook"
 
-const countStore = new Store(0);
+- ✅ Check Storybook URL is accessible
+- ✅ Verify Storybook version (v7+ required)
+- ✅ Check CORS settings if hosted
 
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
+### "Generated component doesn't work"
 
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
+- ✅ Ensure design system was parsed correctly
+- ✅ Check Sandpack loaded right dependencies
+- ✅ Verify generated imports match your system
 
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
+### "Preview not rendering"
 
-export default App;
+- ✅ Check browser console for errors
+- ✅ Verify design system package is in Sandpack dependencies
+- ✅ Try regenerating component
+
+### Slow parsing
+
+- ⏱️ First parse can take 10-30 seconds
+- ⏱️ Results are cached
+- ⏱️ Large Storybooks take longer
+
+## 🎯 Best Practices
+
+### For Best Results
+
+1. **Use comprehensive Storybook**
+   - Document all components
+   - Include usage examples
+   - Document props clearly
+
+2. **Consistent conventions**
+   - Use consistent naming
+   - Follow prop patterns
+   - Document patterns
+
+3. **Clear prompts**
+   - Be specific about what you need
+   - Reference existing components
+   - Mention specific patterns
+
+### Example Good Prompts
+```
+❌ Bad: "Make a card"
+
+✅ Good: "Create a product card similar to our NewsCard component, but for products. Include product image, name, price, and add to cart button. Use our primary button variant."
+
+✅ Good: "Generate a modal dialog using our Dialog component as base. Should have header with close button, scrollable content area, and footer with cancel/confirm actions."
 ```
 
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
+## 🗺️ Roadmap
 
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
+### v1 (Current)
+- [ ] Storybook parsing
+- [ ] Repository code parsing
+- [ ] LLM provider abstraction
+- [ ] Live preview
+- [ ] Style matching
 
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
+---
 
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+Stop copy-pasting components. Let AI learn your design system and generate them for you.

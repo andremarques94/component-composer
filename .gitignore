@@ -1,5 +1,6 @@
 node_modules
 .DS_Store
+.cursor
 dist
 dist-ssr
 *.local
@@ -11,6 +12,11 @@ count.txt
 .output
 .vinxi
 todos.json
+coverage
 
 # sst
 .sst
+
+AGENTS.md
+IMPLEMENTATION_PLAN.md
+

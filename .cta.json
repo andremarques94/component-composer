@@ -1,17 +1,14 @@
-{
-  "projectName": "composer",
-  "mode": "file-router",
-  "typescript": true,
-  "tailwind": true,
-  "packageManager": "pnpm",
-  "addOnOptions": {},
-  "git": true,
-  "version": 1,
-  "framework": "react-cra",
-  "chosenAddOns": [
-    "biome",
-    "nitro",
-    "start",
-    "tanstack-query"
-  ]
-}
+I've fixed a critical bug in the streaming response handling that was corrupting the generated code.
+
+The issue was in `src/routes/index.tsx`, where the streaming logic:
+1.  Failed to buffer incomplete JSON chunks.
+2.  Had a catch block that incorrectly appended the raw, unparsed chunk to the code output whenever a parse error occurred (which happens frequently when a JSON object is split across chunks).
+
+This resulted in code corruption, duplicate segments, and raw JSON leaking into the editor (e.g., `justifyCohy` or missing `sx` props).
+
+I refactored the streaming loop to:
+- Use a persistent buffer for incoming data.
+- Only process complete lines (splitting by newline).
+- Safely handle JSON parsing errors without corrupting the output.
+
+This should result in clean, valid code generation.
